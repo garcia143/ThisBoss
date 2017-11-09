@@ -5,7 +5,9 @@ use Phalcon\Mvc\View\Engine\Php as PhpEngine;
 use Phalcon\Mvc\Url as UrlResolver;
 use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
 use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
+use Phalcon\Crypt;
 use Phalcon\Session\Adapter\Files as SessionAdapter;
+use Phalcon\Http\Response\Cookies;
 use Phalcon\Flash\Direct as Flash;
 
 /**
@@ -20,10 +22,8 @@ $di->setShared('config', function () {
  */
 $di->setShared('url', function () {
     $config = $this->getConfig();
-
     $url = new UrlResolver();
     $url->setBaseUri($config->application->baseUri);
-
     return $url;
 });
 
@@ -90,7 +90,7 @@ $di->setShared('modelsMetadata', function () {
 });
 
 /**
- * Register the session flash service with the Twitter Bootstrap classes
+ * Flash Service
  */
 $di->set('flash', function () {
     return new Flash([
@@ -102,11 +102,28 @@ $di->set('flash', function () {
 });
 
 /**
- * Start the session the first time some component request the session service
+ * Crypt Service
+ */
+$di->set('crypt', function() {
+    $crypt = new Crypt();
+    $crypt->setKey($config->application->cryptSalt);
+    return $crypt;
+});
+
+/**
+ * Session Service
  */
 $di->setShared('session', function () {
     $session = new SessionAdapter();
     $session->start();
-
     return $session;
+});
+
+/**
+ * Cookies Service
+ */
+$di->set('cookies', function() {
+    $cookies = new Cookies();
+    $cookies->useEncryption(false);
+    return $cookies;
 });
