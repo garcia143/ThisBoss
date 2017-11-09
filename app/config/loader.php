@@ -6,9 +6,9 @@ $loader = new \Phalcon\Loader();
  * Register Namespaces
  */
 $loader->registerNamespaces([
-  'Host\Forms' => $config->application->formsDir,
-  'Host\Models' => $config->application->modelsDir,
-  'Host' => $config->application->libraryDir
+  'ThisBoss\Forms' => $config->application->formsDir,
+  'ThisBoss\Models' => $config->application->modelsDir,
+  'ThisBoss' => $config->application->libraryDir
 ]);
 
 /**

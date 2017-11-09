@@ -28,7 +28,7 @@ return new \Phalcon\Config([
         'formsDir'       => APP_PATH . '/forms/',
         'libraryDir'     => APP_PATH . '/library/',
         'cacheDir'       => BASE_PATH . '/cache/',
-        'baseUri'        => preg_replace('/public([\/\\\\])index.php$/', '', $_SERVER["PHP_SELF"]),
+        'baseUri'        => 'http://thisboss.dev/',
         'cryptSalt'      => ''
     ]
 ]);

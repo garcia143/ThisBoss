@@ -1,7 +1,15 @@
 <?php
 
-$router = $di->getRouter();
+$router = $di->getRouter(false);
 
-// Define your routes here
+$router->notFound([
+	'controller' => 'Errors',
+	'action'	 => 'notFound'
+]);
+
+$router->addGet('/', [
+	'controller' => 'Pages',
+	'action'	 => 'index'
+]);
 
 $router->handle();

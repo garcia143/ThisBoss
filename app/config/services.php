@@ -37,6 +37,11 @@ $di->setShared('view', function () {
     $view->setDI($this);
     $view->setViewsDir($config->application->viewsDir);
 
+    $view->disableLevel([
+        View::LEVEL_LAYOUT      => true,
+        View::LEVEL_MAIN_LAYOUT => true,
+    ]);
+
     $view->registerEngines([
         '.volt' => function ($view) {
             $config = $this->getConfig();
@@ -45,7 +50,8 @@ $di->setShared('view', function () {
 
             $volt->setOptions([
                 'compiledPath' => $config->application->cacheDir,
-                'compiledSeparator' => '_'
+                'compiledSeparator' => '_',
+                'compileAlways' => true,
             ]);
 
             return $volt;
@@ -126,4 +132,29 @@ $di->set('cookies', function() {
     $cookies = new Cookies();
     $cookies->useEncryption(false);
     return $cookies;
+});
+
+/**
+ * Translate Service
+ */
+$di->setShared('translate', function() use ($di) {
+
+    // Cookie Service
+    $cookies = $di->get('cookies');
+
+    // Get Language from cookie
+    $language = $cookies->get('language');
+
+    $transFile = APP_PATH.'/languages/'.$language.'.php';
+
+    if (file_exists($transFile)) {
+        require $transFile;
+    } else {
+        require APP_PATH.'/languages/en.php';
+    }
+
+    return new \Phalcon\Translate\Adapter\NativeArray(array(
+        "content" => $messages
+    ));
+
 });
