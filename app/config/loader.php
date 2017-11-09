@@ -3,11 +3,20 @@
 $loader = new \Phalcon\Loader();
 
 /**
- * We're a registering a set of directories taken from the configuration file
+ * Register Namespaces
  */
-$loader->registerDirs(
-    [
-        $config->application->controllersDir,
-        $config->application->modelsDir
-    ]
-)->register();
+$loader->registerNamespaces([
+  'Host\Forms' => $config->application->formsDir,
+  'Host\Models' => $config->application->modelsDir,
+  'Host' => $config->application->libraryDir
+]);
+
+/**
+ * Register Dirs
+ */
+$loader->registerDirs([
+  $config->application->controllersDir,
+  $config->application->modelsDir
+]);
+
+$loader->register();
